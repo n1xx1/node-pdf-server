@@ -20,6 +20,7 @@ RUN apk update && apk add --no-cache nmap && \
     apk add --no-cache chromium harfbuzz "freetype>2.8" ttf-freefont nss
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+COPY package.json ./
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 
