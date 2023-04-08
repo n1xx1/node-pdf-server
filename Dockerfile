@@ -5,7 +5,7 @@ WORKDIR /app
 FROM base AS dependencies
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-ENV CHROME_BIN="/usr/bin/chromium-browser"
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 RUN pnpm install
 
@@ -27,6 +27,8 @@ COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3000
 
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PORT 3000
 
 CMD ["node", "dist/main.js"]
