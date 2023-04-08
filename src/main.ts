@@ -198,7 +198,7 @@ expects a multipart form with the following fields:
   });
 });
 
-app.listen({ port: env.PORT }, (err, address) => {
+app.listen({ port: env.PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) throw err;
 });
 
