@@ -19,6 +19,7 @@ RUN apk update && apk add --no-cache nmap && \
     apk update && \
     apk add --no-cache chromium harfbuzz "freetype>2.8" ttf-freefont nss
 
+ENV CHROME_BIN="/usr/bin/chromium-browser"
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 COPY package.json ./
 COPY --from=build /app/dist ./dist
