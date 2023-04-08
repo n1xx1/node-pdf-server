@@ -151,7 +151,7 @@ expects a multipart form with the following fields:
           footer: z.string().nullish(),
           landscape: z.boolean().nullish(),
           manipulate: schemaManipulate.nullish(),
-          scale: z.number().min(0.2).max(2),
+          scale: z.number().min(0.2).max(2).nullish(),
         }),
         z.union([
           z.object({
