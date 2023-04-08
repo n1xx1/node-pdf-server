@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "pretty": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "newLine": "lf",
+    "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["esnext"]
+  },
+  "files": ["src/**/*"]
+}
