@@ -32,6 +32,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'release') }}
+            type=sha,format=long
 
       - name: Build and push
         id: docker_build
