@@ -1,9 +1,15 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@fastify/bearer-auth':
+    specifier: ^9.0.0
+    version: 9.0.0
   '@fastify/multipart':
     specifier: ^7.5.0
     version: 7.5.0
+  dotenv:
+    specifier: ^16.0.3
+    version: 16.0.3
   fastify:
     specifier: ^4.15.0
     version: 4.15.0
@@ -255,6 +261,12 @@ packages:
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
       fast-uri: 2.2.0
+    dev: false
+
+  /@fastify/bearer-auth@9.0.0:
+    resolution: {integrity: sha512-I1egwg1LRdIvhjL/P+3UEfyK7A3YTnN3goTyf8MJ+v7vVkwyyd8ieccFKI0SzEuxMmfQh/p4yNyLZWcMVwpInA==}
+    dependencies:
+      fastify-plugin: 4.5.0
     dev: false
 
   /@fastify/busboy@1.2.1:
@@ -542,6 +554,11 @@ packages:
 
   /devtools-protocol@0.0.1107588:
     resolution: {integrity: sha512-yIR+pG9x65Xko7bErCUSQaDLrO/P1p3JUzEk7JCU4DowPcGHkTGUGQapcfcLc4qj0UaALwZ+cr0riFgiqpixcg==}
+    dev: false
+
+  /dotenv@16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /emoji-regex@8.0.0:
