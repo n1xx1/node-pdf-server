@@ -2,7 +2,10 @@ import puppeteer, { PDFOptions } from "puppeteer";
 import { z } from "zod";
 import { PDFDocument, PDFEmbeddedPage } from "pdf-lib";
 
-const browser = await puppeteer.launch({ headless: true });
+const browser = await puppeteer.launch({
+  headless: true,
+  args: ["--no-sandbox"],
+});
 
 export const schemaPdfFormat = z.enum([
   "letter",
