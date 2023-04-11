@@ -45,12 +45,6 @@ app.register(async (app) => {
     }
   }
 
-  /*
-expects a multipart form with the following fields:
-- file "main": required, type file, the base
-- file "over": required at least one, one or multiple files
-- string "config": optional, to manipulate inplace, a string with a json inside
-*/
   app.post("/pdf-overlay", async (req, resp) => {
     if (!req.isMultipart) {
       throw new HttpError(400, "multipart expected");
