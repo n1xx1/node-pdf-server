@@ -42,7 +42,7 @@ export async function exportPdfFromHtml(
 ): Promise<Uint8Array> {
   const page = await browser.newPage();
   try {
-    await page.setContent(content);
+    await page.setContent(content, { waitUntil: "networkidle2" });
     return await page.pdf(options);
   } finally {
     await page?.close();
