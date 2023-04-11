@@ -93,7 +93,6 @@ export async function formatPdfHeaderAndFooter(
     if (!res) {
       continue;
     }
-    console.log(res.substring(0, 100));
     $img.attr("src", res);
   }
   const body = $("body").html() ?? "";

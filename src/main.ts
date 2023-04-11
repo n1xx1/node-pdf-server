@@ -46,10 +46,12 @@ app.register(async (app) => {
   }
 
   app.post("/pdf-overlay", async (req, resp) => {
-    if (!req.isMultipart) {
+    if (!req.isMultipart()) {
       throw new HttpError(400, "multipart expected");
     }
 
+    const formData = await loadMultipartData(req);
+    console.log(formData);
     const form = z
       .object({
         main: schemaIsMultipartFile,
@@ -64,7 +66,7 @@ app.register(async (app) => {
           )
         ),
       })
-      .parse(await loadMultipartData(req));
+      .parse(formData);
 
     let data = await overlayPdfs(
       await form.main.toBuffer(),
@@ -81,7 +83,7 @@ app.register(async (app) => {
   });
 
   app.post("/pdf-manipulate", async (req, resp) => {
-    if (!req.isMultipart) {
+    if (!req.isMultipart()) {
       throw new HttpError(400, "multipart expected");
     }
 
@@ -210,6 +212,7 @@ async function loadMultipartData(
   const out: multipart.MultipartFields = {};
 
   const parts = await asyncIterToArray(req.parts());
+
   for (const part of parts) {
     const old = out[part.fieldname];
     if (!old) {
