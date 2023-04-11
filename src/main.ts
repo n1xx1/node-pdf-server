@@ -51,7 +51,6 @@ app.register(async (app) => {
     }
 
     const formData = await loadMultipartData(req);
-    console.log(formData);
     const form = z
       .object({
         main: schemaIsMultipartFile,
@@ -171,8 +170,8 @@ app.register(async (app) => {
 
     if (request.header || request.footer) {
       options.displayHeaderFooter = true;
-      options.headerTemplate = request.header ?? "";
-      options.footerTemplate = request.footer ?? "";
+      options.headerTemplate = request.header ?? " ";
+      options.footerTemplate = request.footer ?? " ";
     }
 
     options.landscape = request.landscape ?? false;

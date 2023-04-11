@@ -40,19 +40,19 @@ function getMargin(
 
 const styles = (options: PDFOptions) => `
 #header, #footer {
-  display: block !important;
   padding-left: ${getMargin(options, "left", "10mm")} !important;
   padding-right: ${getMargin(options, "right", "10mm")} !important;
 }
 #header {
-  padding-top: 0 !important;
+  padding-top: 5mm !important;
 }
 #footer {
-  padding-bottom: 0 !important;
+  padding-bottom: 5mm !important;
 }
 #header > div, #footer > div {
   zoom: 75%;
   width: 100%;
+  font-size: 12px;
 }
 `;
 
@@ -96,5 +96,7 @@ export async function formatPdfHeaderAndFooter(
     $img.attr("src", res);
   }
   const body = $("body").html() ?? "";
-  return `<style>${styles(options)}</style><div>${body}</div>`;
+  return `
+<style>${styles(options)}</style>
+<div>${body}</div>`;
 }
