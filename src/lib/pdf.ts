@@ -1,6 +1,7 @@
 import puppeteer, { PDFOptions } from "puppeteer";
 import { z } from "zod";
 import { PDFDocument, PDFEmbeddedPage } from "pdf-lib";
+import { formatPdfHeaderAndFooter } from "./utils/image";
 
 const browser = await puppeteer.launch({
   headless: true,
@@ -38,12 +39,25 @@ export const schemaPdfNumber = z.union([
 
 export async function exportPdfFromHtml(
   content: string,
-  options: PDFOptions
+  { headerTemplate, footerTemplate, ...options }: PDFOptions
 ): Promise<Uint8Array> {
   const page = await browser.newPage();
   try {
     await page.setContent(content, { waitUntil: "networkidle2" });
-    return await page.pdf(options);
+
+    if (footerTemplate) {
+      footerTemplate = await formatPdfHeaderAndFooter(footerTemplate, options);
+    }
+
+    if (headerTemplate) {
+      headerTemplate = await formatPdfHeaderAndFooter(headerTemplate, options);
+    }
+
+    return await page.pdf({
+      ...options,
+      headerTemplate,
+      footerTemplate,
+    });
   } finally {
     await page?.close();
   }
