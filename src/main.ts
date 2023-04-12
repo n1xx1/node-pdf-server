@@ -26,8 +26,14 @@ app.register(async (app) => {
   });
 });
 
+const MB = 1024 * 1024;
+
 app.register(async (app) => {
-  app.register(multipart);
+  app.register(multipart, {
+    limits: {
+      fileSize: 50 * MB,
+    },
+  });
 
   if (env.ACCESS_TOKEN) {
     const keysArray = env.ACCESS_TOKEN.split(",").map((s) => s.trim());
