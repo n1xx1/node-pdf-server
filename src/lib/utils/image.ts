@@ -1,6 +1,7 @@
 import imageSize from "image-size";
 import { load } from "cheerio";
 import { PDFOptions } from "puppeteer";
+import sharp from "sharp";
 
 function tryImageSize(buffer: Buffer) {
   try {
@@ -19,8 +20,70 @@ async function fetchBase64(url: string) {
   // const { width, height } = tryImageSize(Buffer.from(await blob.arrayBuffer()));
 
   const buffer = Buffer.from(await blob.arrayBuffer());
-  const src = `data:${blob.type};base64,${buffer.toString("base64")}`;
-  return src;
+  return getBlobString(blob.type, buffer);
+}
+
+function getBlobString(type: string, buffer: Buffer) {
+  return `data:${type};base64,${buffer.toString("base64")}`;
+}
+
+export async function fetchImageAndResize(url: string, dimMax: number) {
+  const resp = await fetch(url);
+  const blob = await resp.blob();
+  let buffer = await blob.arrayBuffer();
+
+  try {
+    let s = sharp(buffer);
+    let changed = false;
+    const meta = await s.metadata();
+
+    const width = meta.width!;
+    const height = meta.height!;
+
+    if (width > height) {
+      if (width > dimMax) {
+        s = s.resize({ width: dimMax });
+        changed = true;
+      }
+    } else {
+      if (height > dimMax) {
+        s = s.resize({ height: dimMax });
+      }
+    }
+
+    if (changed) {
+      buffer = await s.toBuffer();
+    } else {
+      s.destroy();
+    }
+  } catch (e) {
+    console.warn("failed to resize");
+  }
+
+  return getBlobString(blob.type, Buffer.from(buffer));
+}
+
+export async function resizeImagesInHtml(html: string, dimMax: number) {
+  const $ = load(html);
+
+  const imgs = $("img");
+  for (const img of imgs) {
+    const $img = $(img);
+    const attrSrc = $img.attr("src");
+    if (!attrSrc) {
+      continue;
+    }
+    const res = await fetchImageAndResize(attrSrc, dimMax).catch((e) => {
+      console.warn(e);
+      Promise.resolve(null);
+    });
+    if (!res) {
+      continue;
+    }
+    $img.attr("src", res);
+  }
+
+  return $.html();
 }
 
 function getMargin(

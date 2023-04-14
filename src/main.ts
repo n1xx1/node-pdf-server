@@ -4,6 +4,7 @@ import Fastify from "fastify";
 import { PDFOptions } from "puppeteer";
 import { z } from "zod";
 import {
+  ExportPDFOptions,
   exportPdfFromHtml,
   manipulatePdf,
   mergePdfs,
@@ -153,6 +154,7 @@ app.register(async (app) => {
           landscape: z.boolean().nullish(),
           manipulate: schemaManipulate.nullish(),
           scale: z.number().min(0.2).max(2).nullish(),
+          maxImageDimension: z.number().nullish(),
         }),
         z.union([
           z.object({
@@ -187,7 +189,11 @@ app.register(async (app) => {
       options.margin = request.margins;
     }
 
-    let data = await exportPdfFromHtml(request.content, options);
+    const otherOptions: ExportPDFOptions = {
+      maxImageDimension: request.maxImageDimension ?? 500,
+    };
+
+    let data = await exportPdfFromHtml(request.content, options, otherOptions);
 
     if (request.manipulate) {
       data = await manipulatePdf(data, request.manipulate);

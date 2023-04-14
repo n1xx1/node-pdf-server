@@ -1,7 +1,7 @@
 import puppeteer, { PDFOptions } from "puppeteer";
 import { z } from "zod";
 import { PDFDocument, PDFEmbeddedPage } from "pdf-lib";
-import { formatPdfHeaderAndFooter } from "./utils/image";
+import { formatPdfHeaderAndFooter, resizeImagesInHtml } from "./utils/image";
 
 const browser = await puppeteer.launch({
   headless: true,
@@ -37,12 +37,18 @@ export const schemaPdfNumber = z.union([
   ),
 ]);
 
+export type ExportPDFOptions = {
+  maxImageDimension?: number;
+};
+
 export async function exportPdfFromHtml(
   content: string,
-  { headerTemplate, footerTemplate, ...options }: PDFOptions
+  { headerTemplate, footerTemplate, ...options }: PDFOptions,
+  { maxImageDimension = 500 }: ExportPDFOptions = {}
 ): Promise<Uint8Array> {
   const page = await browser.newPage();
   try {
+    content = await resizeImagesInHtml(content, maxImageDimension);
     await page.setContent(content, { waitUntil: "networkidle2" });
 
     if (footerTemplate) {
